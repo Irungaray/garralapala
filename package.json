@@ -1,0 +1,22 @@
+{
+  "name": "garralapala",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "script.js",
+  "scripts": {
+    "start": "node script.js"
+  },
+  "author": "Irungaray",
+  "license": "LGPL-3.0-only",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "node-cron": "^3.0.2",
+    "node-telegram-bot-api": "^0.63.0",
+    "puppeteer": "^21.3.7"
+  },
+  "devDependencies": {
+    "@types/node-cron": "^3.0.9",
+    "@types/node-telegram-bot-api": "^0.61.8"
+  }
+}
