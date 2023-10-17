@@ -30,10 +30,12 @@ bot.onText(/\/start/, async (msg) => {
 
   const isAuthorized = chatIds.includes(chatId)
 
-  console.log(`Received ${isAuthorized ? 'authorized' : 'unauthorized'} /start command from #${chatId}`)
+  const from = `#${chatId} - ${msg.from.first_name} ${msg.from.last_name} (${msg.from.username})`
+  const log = `Received ${isAuthorized ? 'authorized' : 'unauthorized'} /start command from ${from}`
 
   if (!isAuthorized) {
     await bot.sendMessage(chatId, 'Bienvenido! Para usar el bot es necesario que estés en la lista..')
+    await bot.sendMessage(process.env.ADMIN_CHAT_ID, log)
     return
   }
 
