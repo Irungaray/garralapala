@@ -99,6 +99,7 @@ async function getNextHoliday() {
   const date = getFetchDate()
 
   if (lastDataFetched.date === date && lastDataFetched.data) {
+    console.log('Retrieving already fetched data')
     return lastDataFetched.data
   }
 
