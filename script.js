@@ -9,6 +9,8 @@ const bot = new TelegramBot(process.env.BOT_TOKEN, { polling: true })
 
 const chatIds = process.env.CHAT_IDS.split(',')
 
+let lastDataFetched = { date: null, data: null }
+
 bot.on('message', async (msg) => {
   if (msg.text.startsWith('/')) return
 
@@ -30,11 +32,11 @@ bot.onText(/\/start/, async (msg) => {
 
   const isAuthorized = chatIds.includes(chatId)
 
-  const from = `#${chatId} - ${msg.from.first_name} ${msg.from.last_name} (${msg.from.username})`
+  const from = `#${chatId} - ${msg.from.first_name ?? ''} ${msg.from.last_name ?? ''} (${msg.from.username})`
   const log = `Received ${isAuthorized ? 'authorized' : 'unauthorized'} /start command from ${from}`
 
   if (!isAuthorized) {
-    await bot.sendMessage(chatId, 'Bienvenido! Para usar el bot es necesario que estés en la lista..')
+    await bot.sendMessage(chatId, `Bienvenido ${msg.from.first_name ?? ''}! Para usar el bot es necesario que estés en la lista...`)
     await bot.sendMessage(process.env.ADMIN_CHAT_ID, log)
     return
   }
@@ -87,7 +89,19 @@ cron.schedule('0 12 * * 3', async () => {
   }
 })
 
+function getFetchDate() {
+  const date = new Date();
+  const [year, month, day] = [date.getFullYear(), date.getMonth(), date.getDay()];
+  return `${year}-${month}-${day}`
+}
+
 async function getNextHoliday() {
+  const date = getFetchDate()
+
+  if (lastDataFetched.date === date && lastDataFetched.data) {
+    return lastDataFetched.data
+  }
+
   const TWO_MINUTES = 2 * 60 * 1000
 
   let browser
@@ -116,7 +130,11 @@ async function getNextHoliday() {
     const countdown = texts.slice(0, texts.length - 1).join(' ').trim();
     const reason = texts[texts.length - 1];
 
-    return `${countdown}: ${reason}`
+    const holidayString = `${countdown}: ${reason}`
+
+    lastDataFetched = { date, data: holidayString }
+
+    return holidayString
   } catch (error) {
     console.log(error)
   } finally {
