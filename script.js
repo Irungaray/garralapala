@@ -96,8 +96,7 @@ cron.schedule('0 12 * * 3', async () => {
 
 function getFetchDate() {
   const date = new Date();
-  const [year, month, day] = [date.getFullYear(), date.getMonth(), date.getDay()];
-  return `${year}-${month}-${day}`
+  return date.toISOString().split(':')[0]
 }
 
 async function getNextHoliday() {
