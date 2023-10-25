@@ -5,7 +5,8 @@
   "type": "module",
   "main": "script.js",
   "scripts": {
-    "start": "nodemon script.js"
+    "start": "node script.js",
+    "start:dev": "nodemon script.js"
   },
   "author": "Irungaray",
   "license": "LGPL-3.0-only",
