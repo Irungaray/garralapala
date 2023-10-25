@@ -24,6 +24,11 @@ bot.on('message', async (msg) => {
     return
   }
 
+  if (msg.text.toLowerCase().includes('gracias')) {
+    await bot.sendMessage(chatId, 'De nada <3')
+    return
+  }
+
   await bot.sendMessage(chatId, 'Usá los comandos.')
 })
 
