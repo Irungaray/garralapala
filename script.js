@@ -3,6 +3,10 @@ import dotenv from 'dotenv'
 import TelegramBot from 'node-telegram-bot-api'
 import cron from 'node-cron'
 
+import healtcheck from './healtcheck.js';
+
+const PORT = process.env.PORT || 3000;
+
 dotenv.config()
 
 const bot = new TelegramBot(process.env.BOT_TOKEN, { polling: true })
@@ -146,3 +150,7 @@ async function getNextHoliday() {
     await browser?.close()
   }
 }
+
+healtcheck.listen(PORT, () => {
+  console.log(`Healtcheck listening on port ${PORT}`);
+});
